@@ -1,0 +1,26 @@
+{
+  "name": "ReactPiano",
+  "version": "0.0.0",
+  "authors": [
+    "Jessie Schalles <jessieschalles@gmail.com>"
+  ],
+  "description": "A piano-esque thing in React.js",
+  "keywords": [
+    "react.js",
+    "web",
+    "audio",
+    "api",
+    "piano"
+  ],
+  "license": "MIT",
+  "homepage": "http://jessieschalles.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ]
+}
