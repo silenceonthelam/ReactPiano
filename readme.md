@@ -1,4 +1,4 @@
 #ReatPiano
 
-A piano of sorts built using React.js and either Backbone or Angular (depending on how I feel).
+A piano of sorts built using React.js and the web audio api.
 
