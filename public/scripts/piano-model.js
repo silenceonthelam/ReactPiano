@@ -1,0 +1,17 @@
+
+//pitch class
+
+//octave number
+
+
+
+
+
+
+
+
+
+
+
+
+

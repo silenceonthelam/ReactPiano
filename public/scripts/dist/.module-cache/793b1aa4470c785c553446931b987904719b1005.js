@@ -15,8 +15,13 @@ var Piano = React.createClass({displayName: 'Piano',
 	},
 	getInitialState: function() {
 		return {
-			wave: "Sine"
+			wave: "Sine",
+			opus: []
 		};
+	},
+	doStateUpdate: function(e) {
+		e.preventDefault();
+		this.setState({wave: "Square"});
 	},
 	render: function() {
 		return (

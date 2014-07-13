@@ -14,9 +14,7 @@ var Piano = React.createClass({displayName: 'Piano',
 		keys: React.propTypes.object
 	},
 	getInitialState: function() {
-		return {
-			wave: "Sine"
-		};
+		
 	},
 	render: function() {
 		return (

@@ -10,13 +10,7 @@ var Piano = React.createClass({displayName: 'Piano',
 	},
 	propTypes: {
 		temperament: React.propTypes.string,
-		numKeys: React.propTypes.number,
-		keys: React.propTypes.object
-	},
-	getInitialState: function() {
-		return {
-			wave: "Sine"
-		};
+		numKeys: React.propTypes.number
 	},
 	render: function() {
 		return (
