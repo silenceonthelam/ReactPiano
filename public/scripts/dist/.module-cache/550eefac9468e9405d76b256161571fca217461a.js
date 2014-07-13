@@ -23,19 +23,10 @@ var Piano = React.createClass({displayName: 'Piano',
 		return (
 			React.DOM.div( {className:"piano-container"}, 
 				PianoControls(null ),
-				PianoKeys( {keys:this.state.keys, onPlayNote:this.playNote} )
+				PianoKeys( {keys:this.state.keys} )
 			)
 
 		);
-	},
-	playNote: function(key,i) {
-		console.log('key', key,i);
-
-		
-
-
-
-		
 	}
 });
 
@@ -87,32 +78,41 @@ var PianoControls = React.createClass({displayName: 'PianoControls',
 
 // });
 
+// <div data-pitchClass="a" data-octave="2" className="key"></div>
+// 	<div data-pitchClass="bb" data-octave="2" className="key black"></div>
+// <div data-pitchClass="b" data-octave="2" className="key"></div>
+// <div data-pitchClass="c" data-octave="3" className="key"></div>
+// 	<div data-pitchClass="db" data-octave="3" className="key black"></div>
+// <div data-pitchClass="d" data-octave="3" className="key"></div>
+// 	<div data-pitchClass="eb" data-octave="3" className="key black"></div>
+// <div data-pitchClass="e" data-octave="3" className="key"></div>
+// <div data-pitchClass="f" data-octave="3" className="key"></div>
+// 	<div data-pitchClass="gb" data-octave="3" className="key black"></div>
+// <div data-pitchClass="g" data-octave="3" className="key"></div>
+// 	<div data-pitchClass="ab" data-octave="3" className="key black"></div>
+
 var PianoKeys = React.createClass({displayName: 'PianoKeys',
 	render: function() {
 
 		var keys = this.props.keys.map(function(key, i) {
 
 			var isBlack = (key.pitchClass.split('').indexOf('#') !== -1 ||
-							(key.pitchClass.split('').indexOf('b') !== -1) ? "black" : "") ? "black" : "",
+							(key.pitchClass.split('').indexOf('#') !== -1) ? "black" : "") ? "black" : "",
 				keyClass = "key " + isBlack;
 
 			return (
 				React.DOM.span( {'data-ocatve':key.octave, 
 					'data-pitchclass':key.pitchClass,
-					className:keyClass,
-					onClick:this.playNote.bind(this, key,i)}
+					className:keyClass}
 				)
 			);
-		}.bind(this));
+		});
 
 		return (
 			React.DOM.div( {className:"piano-keys"}, 
 				keys
 			)
 		);
-	},
-	playNote: function(key,i) {
-		this.props.onPlayNote(key,i);
 	}
 });
 

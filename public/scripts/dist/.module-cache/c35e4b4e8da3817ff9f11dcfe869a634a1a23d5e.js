@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-var Piano = React.createClass({
+var Piano = React.createClass({displayName: 'Piano',
 	// getDefaultProps: function() {
 	// 	return {
 	// 		temperament: "equal",
@@ -21,40 +21,34 @@ var Piano = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="piano-container">
-				<PianoControls />
-				<PianoKeys keys={this.state.keys} onPlayNote={this.playNote} />
-			</div>
+			React.DOM.div( {className:"piano-container"}, 
+				PianoControls(null ),
+				PianoKeys( {keys:this.state.keys, playNote:this.playNote(key)} )
+			)
 
 		);
 	},
-	playNote: function(key,i) {
-		console.log('key', key,i);
-
-		
-
-
-
-		
+	playNote: function(key) {
+		console.log('key', key);
 	}
 });
 
-var PianoControls = React.createClass({
+var PianoControls = React.createClass({displayName: 'PianoControls',
 	render: function() {
 		return (
-			<div className="piano-controls">
+			React.DOM.div( {className:"piano-controls"}, 
 				
-				<div className="circle-ctrls">
-					<div className="circle-ctrl">sine</div>
-					<div className="circle-ctrl">squ</div>
-					<div className="circle-ctrl">saw</div>
-					<div className="circle-ctrl">tri</div>
-				</div>
+				React.DOM.div( {className:"circle-ctrls"}, 
+					React.DOM.div( {className:"circle-ctrl"}, "sine"),
+					React.DOM.div( {className:"circle-ctrl"}, "squ"),
+					React.DOM.div( {className:"circle-ctrl"}, "saw"),
+					React.DOM.div( {className:"circle-ctrl"}, "tri")
+				),
 
-				<div className="piano-display">
+				React.DOM.div( {className:"piano-display"}
 					
-				</div>
-			</div>
+				)
+			)
 		);
 	}
 });
@@ -87,7 +81,7 @@ var PianoControls = React.createClass({
 
 // });
 
-var PianoKeys = React.createClass({
+var PianoKeys = React.createClass({displayName: 'PianoKeys',
 	render: function() {
 
 		var keys = this.props.keys.map(function(key, i) {
@@ -97,22 +91,22 @@ var PianoKeys = React.createClass({
 				keyClass = "key " + isBlack;
 
 			return (
-				<span data-ocatve={key.octave} 
-					data-pitchclass={key.pitchClass}
-					className={keyClass}
-					onClick={this.playNote.bind(this, key,i)}>
-				</span>
+				React.DOM.span( {'data-ocatve':key.octave, 
+					'data-pitchclass':key.pitchClass,
+					className:keyClass,
+					onClick:this.handleClick}
+				)
 			);
-		}.bind(this));
+		});
 
 		return (
-			<div className="piano-keys">
-				{keys}
-			</div>
+			React.DOM.div( {className:"piano-keys"}, 
+				keys
+			)
 		);
 	},
-	playNote: function(key,i) {
-		this.props.onPlayNote(key,i);
+	handleClick: function(key) {
+		this.props.playNote(key);
 	}
 });
 
@@ -124,7 +118,7 @@ var PianoKeys = React.createClass({
 // 	mixins: [WhiteKey, BlackKey]
 // });
 
-React.renderComponent(<Piano keys={generateKeys(numKeys)} />, document.getElementById('piano'));
+React.renderComponent(Piano( {keys:generateKeys(numKeys)} ), document.getElementById('piano'));
 
 
 
