@@ -102,7 +102,7 @@ function calcIntonation(key, temperament) {
 	// return freq;
 }
 
-var Piano = React.createClass({
+var Piano = React.createClass({displayName: 'Piano',
 	// getDefaultProps: function() {
 	// 	return {
 	// 		temperament: "equal",
@@ -123,11 +123,11 @@ var Piano = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="piano-container">
-				<PianoControls />
-				<PianoKeys keys={this.state.keys} 
-					onPlayNote={this.playNote} />
-			</div>
+			React.DOM.div( {className:"piano-container"}, 
+				PianoControls(null ),
+				PianoKeys( {keys:this.state.keys, 
+					onPlayNote:this.playNote} )
+			)
 
 		);
 	},
@@ -174,49 +174,25 @@ var Piano = React.createClass({
 	}
 });
 
-var PianoControls = React.createClass({
+var PianoControls = React.createClass({displayName: 'PianoControls',
 	render: function() {
 		return (
-			<div className="piano-controls">
+			React.DOM.div( {className:"piano-controls"}, 
+				
+				React.DOM.div( {className:"press-btn-ctrls"}, 
+					React.DOM.div( {className:"press-btn-ctrl"}, "sine"),
+					React.DOM.div( {className:"press-btn-ctrl"}, "squ"),
+					React.DOM.div( {className:"press-btn-ctrl"}, "saw"),
+					React.DOM.div( {className:"press-btn-ctrl"}, "tri")
+				),
 
-				<div className="col-3">
+				React.DOM.div( {className:"piano-display-switch"}
+				),
 
-					<div className="press-btn-ctrls">
-						<div className="press-btn-ctrl">sine</div>
-						<div className="press-btn-ctrl">squ</div>
-						<div className="press-btn-ctrl">saw</div>
-						<div className="press-btn-ctrl">tri</div>
-					</div>
-
-					<div className="knob-ctrls">
-						<label>
-							Gain
-							<input type="range" className="knob-ctrl" />
-						</label>
-						<label>
-							Detune
-							<input type="range" className="knob-ctrl" />
-						</label>		
-					</div>
-
-				</div>
-				<div className="col-3">
-
-					<div className="piano-display-switch">
-						<label className="piano-display-label">What to play</label>
-						<input type="radio" name="display" />
-						<input type="radio" name="display" />
-					</div>
-
-					<DisplayControl />
-
-				</div>
-				<div className="col-3">
-
-
-				</div>
-
-			</div>
+				React.DOM.div( {className:"piano-display"}
+					
+				)
+			)
 		);
 	}
 });
@@ -245,25 +221,11 @@ var PianoControls = React.createClass({
 // });
 
 
-var DisplayControl = React.createClass({
-	render: function() {
-		return (
-			<div className="piano-display">
-				<div className="piano-display-info">
-					<span className="chord-type">Triads only</span>
-					<span className="chord-name">C Major</span>
-				</div>
-				<div className="piano-display-chord-members">
-					<span className="piano-display-chord-member">C</span>
-					<span className="piano-display-chord-member">E</span>
-					<span className="piano-display-chord-member">G</span>
-				</div>
-			</div>
-		);
-	}
-});
+// var DisplayControl = React.createClass({
 
-var PianoKeys = React.createClass({
+// });
+
+var PianoKeys = React.createClass({displayName: 'PianoKeys',
 	render: function() {
 
 		var keys = this.props.keys.map(function(key, i) {
@@ -274,18 +236,18 @@ var PianoKeys = React.createClass({
 				keyClass = "key " + isBlack;
 
 			return (
-				<span data-ocatve={key.octave} 
-					data-pitchclass={key.pitchClass}
-					className={keyClass}
-					onClick={this.playNote.bind(this, key,i)}>
-				</span>
+				React.DOM.span( {'data-ocatve':key.octave, 
+					'data-pitchclass':key.pitchClass,
+					className:keyClass,
+					onClick:this.playNote.bind(this, key,i)}
+				)
 			);
 		}.bind(this));
 
 		return (
-			<div className="piano-keys">
-				{keys}
-			</div>
+			React.DOM.div( {className:"piano-keys"}, 
+				keys
+			)
 		);
 	},
 	playNote: function(key,i) {
@@ -293,8 +255,16 @@ var PianoKeys = React.createClass({
 	}
 });
 
+// var WhiteKey = {};
+
+// var BlackKey = {};
+
+// var Key = React.createClass({
+// 	mixins: [WhiteKey, BlackKey]
+// });
+
 React.renderComponent(
-	<Piano keys={generateKeys(numKeys)} />, 
+	Piano( {keys:generateKeys(numKeys)} ), 
 	document.getElementById('piano')
 );
 

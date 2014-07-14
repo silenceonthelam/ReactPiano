@@ -60,49 +60,10 @@ function calcMeanTone(tuningRatio) {
 }
 
 function calcIntonation(key, temperament) {
-	// var that = $(that);
-	// var octMult = 1;
-	// var pitch = that.attr('data-pitchClass');
-	// var oct = that.attr('data-octave');
-	// ref = 440;
-	// refKey = 49;
-	// curKey = that.index()+1;
-	// //console.log("Cur " + curKey);
-	// var keyDiff = curKey - refKey;
-	// //console.log("Key " + keyDiff);
-	// var pitchNum = keyDiff % 12;
-	// //console.log("pn " + pitchNum);
-	// //refPitch = 'a'; //for future variants on the tuning
-	// refOct = 4;
-	// if (pitchNum < 0) {pitchNum = 12 - Math.abs(pitchNum);}
-	// var tuningRatio = [];
-	// var refPitch = [];
-	// var baseReference = 440;
-	// freq;
-	// if (temperament == 1) { //pythagorean
-	// 	calcPy(tuningRatio);
-	// } else if (temperament == 2) { //just
-	// 	calcJust(tuningRatio);
-	// } else if (temperament == 3) { //meanTone
-	// 	calcMT(tuningRatio);
-	// }
-	// console.log('trpn',tuningRatio[pitchNum]);
-	// if (pitchNum > 2) {
-	// 	oct = oct - 1;
-	// }
-	// if (oct > refOct ) {
-	// 	octMult = oct - refOct + 1;
-	// 	freq = baseReference * tuningRatio[pitchNum] * Math.pow(2,(octMult-1));
-	// } else if (oct < refOct) {
-	// 	octMult = refOct - oct + 1;
-	// 	freq = baseReference * tuningRatio[pitchNum] * Math.pow(2,-(octMult-1));
-	// } else {
-	// 	freq = baseReference * tuningRatio[pitchNum];
-	// }
-	// return freq;
+
 }
 
-var Piano = React.createClass({
+var Piano = React.createClass({displayName: 'Piano',
 	// getDefaultProps: function() {
 	// 	return {
 	// 		temperament: "equal",
@@ -123,11 +84,11 @@ var Piano = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="piano-container">
-				<PianoControls />
-				<PianoKeys keys={this.state.keys} 
-					onPlayNote={this.playNote} />
-			</div>
+			React.DOM.div( {className:"piano-container"}, 
+				PianoControls(null ),
+				PianoKeys( {keys:this.state.keys, 
+					onPlayNote:this.playNote} )
+			)
 
 		);
 	},
@@ -135,7 +96,7 @@ var Piano = React.createClass({
 		console.log('key', key,i);
 
 		// var that = $(this);
-
+		
 		// osc = ctx.createOscillator();
 		// osc.detune.value = getDetuneAmt();
 		// console.log(getOscType());
@@ -174,49 +135,22 @@ var Piano = React.createClass({
 	}
 });
 
-var PianoControls = React.createClass({
+var PianoControls = React.createClass({displayName: 'PianoControls',
 	render: function() {
 		return (
-			<div className="piano-controls">
+			React.DOM.div( {className:"piano-controls"}, 
+				
+				React.DOM.div( {className:"circle-ctrls"}, 
+					React.DOM.div( {className:"circle-ctrl"}, "sine"),
+					React.DOM.div( {className:"circle-ctrl"}, "squ"),
+					React.DOM.div( {className:"circle-ctrl"}, "saw"),
+					React.DOM.div( {className:"circle-ctrl"}, "tri")
+				),
 
-				<div className="col-3">
-
-					<div className="press-btn-ctrls">
-						<div className="press-btn-ctrl">sine</div>
-						<div className="press-btn-ctrl">squ</div>
-						<div className="press-btn-ctrl">saw</div>
-						<div className="press-btn-ctrl">tri</div>
-					</div>
-
-					<div className="knob-ctrls">
-						<label>
-							Gain
-							<input type="range" className="knob-ctrl" />
-						</label>
-						<label>
-							Detune
-							<input type="range" className="knob-ctrl" />
-						</label>		
-					</div>
-
-				</div>
-				<div className="col-3">
-
-					<div className="piano-display-switch">
-						<label className="piano-display-label">What to play</label>
-						<input type="radio" name="display" />
-						<input type="radio" name="display" />
-					</div>
-
-					<DisplayControl />
-
-				</div>
-				<div className="col-3">
-
-
-				</div>
-
-			</div>
+				React.DOM.div( {className:"piano-display"}
+					
+				)
+			)
 		);
 	}
 });
@@ -245,25 +179,11 @@ var PianoControls = React.createClass({
 // });
 
 
-var DisplayControl = React.createClass({
-	render: function() {
-		return (
-			<div className="piano-display">
-				<div className="piano-display-info">
-					<span className="chord-type">Triads only</span>
-					<span className="chord-name">C Major</span>
-				</div>
-				<div className="piano-display-chord-members">
-					<span className="piano-display-chord-member">C</span>
-					<span className="piano-display-chord-member">E</span>
-					<span className="piano-display-chord-member">G</span>
-				</div>
-			</div>
-		);
-	}
-});
+// var DisplayControl = React.createClass({
 
-var PianoKeys = React.createClass({
+// });
+
+var PianoKeys = React.createClass({displayName: 'PianoKeys',
 	render: function() {
 
 		var keys = this.props.keys.map(function(key, i) {
@@ -274,18 +194,18 @@ var PianoKeys = React.createClass({
 				keyClass = "key " + isBlack;
 
 			return (
-				<span data-ocatve={key.octave} 
-					data-pitchclass={key.pitchClass}
-					className={keyClass}
-					onClick={this.playNote.bind(this, key,i)}>
-				</span>
+				React.DOM.span( {'data-ocatve':key.octave, 
+					'data-pitchclass':key.pitchClass,
+					className:keyClass,
+					onClick:this.playNote.bind(this, key,i)}
+				)
 			);
 		}.bind(this));
 
 		return (
-			<div className="piano-keys">
-				{keys}
-			</div>
+			React.DOM.div( {className:"piano-keys"}, 
+				keys
+			)
 		);
 	},
 	playNote: function(key,i) {
@@ -293,8 +213,16 @@ var PianoKeys = React.createClass({
 	}
 });
 
+// var WhiteKey = {};
+
+// var BlackKey = {};
+
+// var Key = React.createClass({
+// 	mixins: [WhiteKey, BlackKey]
+// });
+
 React.renderComponent(
-	<Piano keys={generateKeys(numKeys)} />, 
+	Piano( {keys:generateKeys(numKeys)} ), 
 	document.getElementById('piano')
 );
 

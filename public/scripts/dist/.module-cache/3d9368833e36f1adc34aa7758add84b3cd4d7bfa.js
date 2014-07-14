@@ -60,46 +60,7 @@ function calcMeanTone(tuningRatio) {
 }
 
 function calcIntonation(key, temperament) {
-	// var that = $(that);
-	// var octMult = 1;
-	// var pitch = that.attr('data-pitchClass');
-	// var oct = that.attr('data-octave');
-	// ref = 440;
-	// refKey = 49;
-	// curKey = that.index()+1;
-	// //console.log("Cur " + curKey);
-	// var keyDiff = curKey - refKey;
-	// //console.log("Key " + keyDiff);
-	// var pitchNum = keyDiff % 12;
-	// //console.log("pn " + pitchNum);
-	// //refPitch = 'a'; //for future variants on the tuning
-	// refOct = 4;
-	// if (pitchNum < 0) {pitchNum = 12 - Math.abs(pitchNum);}
-	// var tuningRatio = [];
-	// var refPitch = [];
-	// var baseReference = 440;
-	// freq;
-	// if (temperament == 1) { //pythagorean
-	// 	calcPy(tuningRatio);
-	// } else if (temperament == 2) { //just
-	// 	calcJust(tuningRatio);
-	// } else if (temperament == 3) { //meanTone
-	// 	calcMT(tuningRatio);
-	// }
-	// console.log('trpn',tuningRatio[pitchNum]);
-	// if (pitchNum > 2) {
-	// 	oct = oct - 1;
-	// }
-	// if (oct > refOct ) {
-	// 	octMult = oct - refOct + 1;
-	// 	freq = baseReference * tuningRatio[pitchNum] * Math.pow(2,(octMult-1));
-	// } else if (oct < refOct) {
-	// 	octMult = refOct - oct + 1;
-	// 	freq = baseReference * tuningRatio[pitchNum] * Math.pow(2,-(octMult-1));
-	// } else {
-	// 	freq = baseReference * tuningRatio[pitchNum];
-	// }
-	// return freq;
+
 }
 
 var Piano = React.createClass({displayName: 'Piano',
@@ -134,28 +95,26 @@ var Piano = React.createClass({displayName: 'Piano',
 	playNote: function(key,i) {
 		console.log('key', key,i);
 
-		// var that = $(this);
+		var that = $(this);
+		osc = ctx.createOscillator();
+		osc.detune.value = getDetuneAmt();
+		console.log(getOscType());
+		osc.type = getOscType();
+		var temperament = getTemperament();
+		if (temperament == 0) {
+			calcET(that);
+		} else {
+			calcOther(that,temperament);
+		}
+		osc.frequency.value = freq;
+		gainNode = ctx.createGainNode();
 
-		// osc = ctx.createOscillator();
-		// osc.detune.value = getDetuneAmt();
-		// console.log(getOscType());
-		// osc.type = getOscType();
+		console.log(gainNode);
 
-		// var temperament = getTemperament();
+		gainNode.gain.value = 0.0;
+		var loudness = getVolume();
 
-		// if (temperament == 0) {
-		// 	calcET(that);
-		// } else {
-		// 	calcOther(that,temperament);
-		// }
-
-		// osc.frequency.value = freq;
-		// gainNode = ctx.createGainNode();
-
-		// gainNode.gain.value = 0.0;
-		// var loudness = getVolume();
-
-		// osc.connect(gainNode);
+		osc.connect(gainNode);
 
 		// compressor = ctx.createDynamicsCompressor();
 		// gainNode.connect(compressor);
@@ -178,44 +137,17 @@ var PianoControls = React.createClass({displayName: 'PianoControls',
 	render: function() {
 		return (
 			React.DOM.div( {className:"piano-controls"}, 
-
-				React.DOM.div( {className:"col-3"}, 
-
-					React.DOM.div( {className:"press-btn-ctrls"}, 
-						React.DOM.div( {className:"press-btn-ctrl"}, "sine"),
-						React.DOM.div( {className:"press-btn-ctrl"}, "squ"),
-						React.DOM.div( {className:"press-btn-ctrl"}, "saw"),
-						React.DOM.div( {className:"press-btn-ctrl"}, "tri")
-					),
-
-					React.DOM.div( {className:"knob-ctrls"}, 
-						React.DOM.label(null, 
-							"Gain",
-							React.DOM.input( {type:"range", className:"knob-ctrl"} )
-						),
-						React.DOM.label(null, 
-							"Detune",
-							React.DOM.input( {type:"range", className:"knob-ctrl"} )
-						)		
-					)
-
+				
+				React.DOM.div( {className:"circle-ctrls"}, 
+					React.DOM.div( {className:"circle-ctrl"}, "sine"),
+					React.DOM.div( {className:"circle-ctrl"}, "squ"),
+					React.DOM.div( {className:"circle-ctrl"}, "saw"),
+					React.DOM.div( {className:"circle-ctrl"}, "tri")
 				),
-				React.DOM.div( {className:"col-3"}, 
 
-					React.DOM.div( {className:"piano-display-switch"}, 
-						React.DOM.label( {className:"piano-display-label"}, "What to play"),
-						React.DOM.input( {type:"radio", name:"display"} ),
-						React.DOM.input( {type:"radio", name:"display"} )
-					),
-
-					DisplayControl(null )
-
-				),
-				React.DOM.div( {className:"col-3"}
-
-
+				React.DOM.div( {className:"piano-display"}
+					
 				)
-
 			)
 		);
 	}
@@ -245,23 +177,9 @@ var PianoControls = React.createClass({displayName: 'PianoControls',
 // });
 
 
-var DisplayControl = React.createClass({displayName: 'DisplayControl',
-	render: function() {
-		return (
-			React.DOM.div( {className:"piano-display"}, 
-				React.DOM.div( {className:"piano-display-info"}, 
-					React.DOM.span( {className:"chord-type"}, "Triads only"),
-					React.DOM.span( {className:"chord-name"}, "C Major")
-				),
-				React.DOM.div( {className:"piano-display-chord-members"}, 
-					React.DOM.span( {className:"piano-display-chord-member"}, "C"),
-					React.DOM.span( {className:"piano-display-chord-member"}, "E"),
-					React.DOM.span( {className:"piano-display-chord-member"}, "G")
-				)
-			)
-		);
-	}
-});
+// var DisplayControl = React.createClass({
+
+// });
 
 var PianoKeys = React.createClass({displayName: 'PianoKeys',
 	render: function() {
@@ -292,6 +210,14 @@ var PianoKeys = React.createClass({displayName: 'PianoKeys',
 		this.props.onPlayNote(key,i);
 	}
 });
+
+// var WhiteKey = {};
+
+// var BlackKey = {};
+
+// var Key = React.createClass({
+// 	mixins: [WhiteKey, BlackKey]
+// });
 
 React.renderComponent(
 	Piano( {keys:generateKeys(numKeys)} ), 
