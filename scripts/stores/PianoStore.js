@@ -150,7 +150,7 @@ function stopNote(note) {
 
     var now = audioCtx.currentTime;
     currentGainNode.gain.cancelScheduledValues(now);
-    currentGainNode.gain.setTargetAtTime(0.0, now + .35, .15);
+    currentGainNode.gain.setTargetAtTime(0.0, now + .25, .15);
 }
 
 function stopSpecificNote(note, keypressed) {} // todo
