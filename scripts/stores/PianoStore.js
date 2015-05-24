@@ -20,7 +20,7 @@ var noteUtils         = require("../note-utils");
 //          ~ Michael Scott
 const CHANGE_EVENT = "change";
 
-// make sure this is only declared once
+// make sure this is only init once
 var audioCtx = audioCtx || new AudioContext();
 
 var _currentChord = "",
@@ -159,7 +159,6 @@ AppDispatcher.register(function(action) {
     switch(action.actionType) { 
 
         //how the piano should display
-        //todo: better, more testable way of doing this
         case PianoConstants.PIANO_RECALC_NUM_KEYS:
             regenerateKeys();
             PianoStore.emitChange();
