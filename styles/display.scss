@@ -1,0 +1,27 @@
+.ctrls__display {
+	background-image: linear-gradient(
+						170deg,
+						hsla(187,39%,82%,.1) 41%,
+						hsla(187,39%,62%,0) 41%
+					),
+					linear-gradient(
+						151deg,
+						hsla(187,59%,72%,.1) 41%,
+						hsla(187,59%,72%,0) 41%
+					),
+					linear-gradient(
+						hsla(187,40%,72%,.75) 20%,
+						hsla(187,30%,72%,.65) 80%
+					);
+	box-shadow: 0 1px 0 0 hsla(187,5%,95%,.1),
+				 0 0 1px 0 hsla(187,5%,5%,1);
+	margin: 0 auto;
+	max-width: 24em;
+	width: 100%;
+}
+
+@media (max-width: 1024px) { 
+	.ctrls__display {
+		display: none;
+	}
+}

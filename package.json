@@ -1,0 +1,33 @@
+{
+  "name": "ReactPiano",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+    "flux",
+    "react",
+    "web audio"
+  ],
+  "dependencies": {
+    "flux": "^2.0.3",
+    "react": "~0.12.2",
+    "keymirror": "^0.1.1",
+    "object-assign": "^2.0.0",
+    "lodash": "^3.8.0",
+    "caplet": "^2.0.0"
+  },
+  "devDependencies": {
+    "jsx-loader": "~0.12.2",
+    "webpack": "~1.4.15",
+    "react-hot-loader": "~1.0.7",
+    "webpack-dev-server": "~1.7.0",
+    "style-loader": "^0.8.3",
+    "css-loader": "^0.9.1",
+    "sass-loader": "^0.6.0",
+    "node-sass": "^2.1.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Jessie Schalles",
+  "license": "ISC"
+}

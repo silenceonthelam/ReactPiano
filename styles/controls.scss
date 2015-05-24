@@ -1,0 +1,73 @@
+.piano__controls {
+	background-color: hsla(187,59%,82%,.18);
+	border-radius: 3px 3px 1px 1px;
+	color: hsla(187,30%,60%,1);
+	display: flex;
+	height: 150px;
+	margin: 24px 12px 0 12px;
+	position: relative;
+}
+.piano__controls__col {
+	display: flex;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+.controls__group {
+	display: block;
+	margin: 12px 24px 0;
+}
+.controls__group--middle {
+	display: flex;
+	margin: 12px 24px 0 12px;
+}
+.controls__label {
+	letter-spacing: .5px;
+	line-height: 18px;
+	margin: 0 auto;
+	text-align: center;
+	text-shadow: 0 -1px 0 hsla(187,39%,22%,.3);
+	text-transform: uppercase;
+}
+.controls__label--stacked {
+	@extend .controls__label;
+
+	display: block;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+.controls__label__title {
+	-moz-background-clip: text;
+	-webkit-background-clip: text;
+	background-clip: text;
+	background-color: hsla(187,10%,20%,1);
+	color: transparent;
+	letter-spacing: 1px;
+	text-shadow: 0 1px 0 hsla(187,30%,60%,.2);
+	text-transform: uppercase;
+
+			display: none; //temp
+}
+.controls__label__text {
+	font-size: 10px;
+	font-weight: 400;
+}
+.controls__label__text--stacked {
+	@extend .controls__label__text;
+
+	position: relative;
+	top: -6px;
+}
+.controls__label__text--checked {
+	@extend .controls__label__text;
+
+	color: hsla(187,40%,72%,1);
+	text-shadow: 0 -1px 0 hsla(187,39%,22%,.3),
+				0 0 6px hsla(187,45%,55%,1),
+				0 1px 12px hsla(187,45%,45%,.1);
+}
+.controls__label__text--stacked--checked {
+	@extend .controls__label__text--stacked;
+	@extend .controls__label__text--checked;
+}
