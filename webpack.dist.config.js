@@ -5,9 +5,9 @@ module.exports = {
         './scripts/index'
     ],
     output: {
-        path: 'build/',
+        path: __dirname + '/build/',
         filename: 'bundle.js',
-        publicPath: '/scripts/'
+        publicPath: '/build/'
     },
     plugins: [
     ],

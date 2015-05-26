@@ -92,6 +92,7 @@ function playNote(note) {
 
     osc.frequency.value = freq;
     osc.detune.value = _synthSettings.detuneAmt;
+
     osc.type = _synthSettings.oscType;
 
     // default the gain to 0 so envelopes will work

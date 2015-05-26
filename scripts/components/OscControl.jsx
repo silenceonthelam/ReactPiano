@@ -12,7 +12,7 @@ var OscControl = React.createClass({
 			val: "square", 
 		},{
 			displayName: "saw",
-			val: "saw", 
+			val: "sawtooth", 
 		},{
 			displayName: "tri",
 			val: "triangle"

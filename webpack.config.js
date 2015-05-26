@@ -8,9 +8,9 @@ module.exports = {
         './scripts/index'
     ],
     output: {
-        path: __dirname,
+        path: __dirname + '/build/',
         filename: 'bundle.js',
-        publicPath: '/scripts/'
+        publicPath: '/build/'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
