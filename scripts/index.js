@@ -1,8 +1,5 @@
-"use strict";
+import Piano    from "./components/Piano";
+import React    from "react";
+import {render} from "react-dom";
 
-require("../styles/style.scss");
-
-var React = require("react"),
-    App   = require("./components/App");
-
-React.render(<App />, document.getElementById("piano"));
+render(<Piano />, document.getElementById("piano"));

@@ -1,10 +1,11 @@
-var AppDispatcher  = require('../AppDispatcher'),
-	PianoConstants = require('../PianoConstants');
+import AppDispatcher  from "../AppDispatcher";
+import PianoConstants from "../PianoConstants";
 
-var PianoActions = {
-	recalcNumKeys: function() {
+export const PianoActions = {
+	recalcNumKeys: function(winWidth) {
 		AppDispatcher.dispatch({
-			actionType: PianoConstants.PIANO_RECALC_NUM_KEYS
+			actionType: PianoConstants.PIANO_RECALC_NUM_KEYS,
+			winWidth: winWidth
 		});
 	},
 	playNote: function(note) {
@@ -13,23 +14,9 @@ var PianoActions = {
 			note: note
 		});
 	},
-	playSpecificNote: function(note, keyPressed) {
-		AppDispatcher.dispatch({
-			actionType: PianoConstants.PIANO_PLAY_SPECIFIC_NOTE,
-			keyPressed: keyPressed,
-			note: note
-		});
-	},
 	stopNote: function(note) {
 		AppDispatcher.dispatch({
 			actionType: PianoConstants.PIANO_STOP_NOTE,
-			note: note
-		});
-	},
-	stopSpecificNote: function(note, keyPressed) {
-		AppDispatcher.dispatch({
-			actionType: PianoConstants.PIANO_STOP_SPECIFIC_NOTE,
-			keyPressed: keyPressed,
 			note: note
 		});
 	},
@@ -51,12 +38,10 @@ var PianoActions = {
 			oscType: oscType
 		});
 	},
-	updateTemperament: function(temperament) {
+	updateTuning: function(tuning) {
 		AppDispatcher.dispatch({
-			actionType: PianoConstants.PIANO_UDPATE_TEMPERAMENT,
-			temperament: temperament
+			actionType: PianoConstants.PIANO_UDPATE_TUNING,
+			tuning: tuning
 		});
-	}
+	}	
 };
-
-module.exports = PianoActions;

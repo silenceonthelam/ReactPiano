@@ -1,33 +1,52 @@
 {
   "name": "ReactPiano",
   "version": "0.0.0",
-  "description": "",
+  "description": "A piano synthesizer written with React and the Web Audio API",
   "keywords": [
     "flux",
     "react",
-    "web audio"
+    "web audio",
+    "web audio synthesizer",
+    "piano",
+    "webpack"
   ],
+  "main": "server.js",
   "dependencies": {
-    "flux": "^2.0.3",
-    "react": "~0.12.2",
+    "flux": "^3.0.0",
     "keymirror": "^0.1.1",
-    "object-assign": "^2.0.0",
-    "lodash": "^3.8.0",
-    "caplet": "^2.0.0"
+    "lodash": "^4.16.4",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "jsx-loader": "~0.12.2",
-    "webpack": "~1.4.15",
-    "react-hot-loader": "~1.0.7",
-    "webpack-dev-server": "~1.7.0",
-    "style-loader": "^0.8.3",
-    "css-loader": "^0.9.1",
-    "sass-loader": "^0.6.0",
-    "node-sass": "^2.1.1"
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-preset-stage-0": "^6.16.0",
+    "css-loader": "^0.25.0",
+    "express": "^4.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "node-sass": "^3.10.1",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.0"    
   },
   "scripts": {
+    "build": "NODE_ENV=production node_modules/.bin/webpack --progress -p --config ./webpack.dist.config.js",
     "start": "node server.js"
   },
   "author": "Jessie Schalles",
-  "license": "ISC"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silenceonthelam/ReactPiano.git"
+  },
+  "bugs": {
+    "url": "https://github.com/silenceonthelam/ReactPiano/issues"
+  },
+  "homepage": "https://github.com/silenceonthelam/ReactPiano"
 }

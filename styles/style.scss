@@ -2,15 +2,38 @@
 @import "controls";
 @import "display";
 @import "keys";
+@import "label";
 @import "slider-controls";
 
 * {
 	box-sizing: border-box;
 	list-style: none;
-	padding: 0;
 	margin: 0;
+	padding: 0;
 	text-decoration: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
+
+*:active,
+*:focus {
+	outline: none;
+}
+
+button:hover,
+input:hover,
+.key:hover,
+label:hover {
+	cursor: pointer
+}
+
+html,
+body {
+	height: 100%;
+	width: 100%;
+}
+
 body {
 	background-color: hsla(8,9%,85%,1);
 	background-image: radial-gradient(
@@ -19,13 +42,14 @@ body {
 						hsla(8,9%,85%,1) 50%
 					);
 	background-repeat: no-repeat;
-	font: 400 12px/16px 'Roboto', sans-serif;
+	font: 500 10px/18px "Roboto", sans-serif;
+	text-transform: uppercase;
 }
+
 .piano__title {
 	background: hsla(187, 60%, 50%, .9);
 	color: #fff;
 	display: inline-block;
-	font-weight: 500;
 	font-size: 14px;
 	left: 0;
 	letter-spacing: .05em;
@@ -34,73 +58,158 @@ body {
 	text-transform: uppercase;
 	top: 0;
 	z-index: 9;
+
+    @media(max-width: 320px) {
+        display: none;
+    }
+
+    @media (max-height: 480px) {
+        display: none;
+    } 	    
 }
+
 .piano {
-	background: hsla(195,12%,24%,1);
-	border-bottom-left-radius: 60px 6px;
-	border-bottom-right-radius: 60px 6px;
-	border-top-left-radius: 1px;
-	border-top-right-radius: 1px;
-	display: flex; //those muscles
+	background-color: hsla(187,12%,24%,1);
+	border-bottom-left-radius: 60px 9px;
+	border-bottom-right-radius: 60px 9px;
+	border-top-left-radius: 6px 3px;
+	border-top-right-radius: 6px 3px;
+	display: flex;
+	height: 480px;
 	margin: 36px 24px;
 	position: relative;
+
+	@media(max-width: 1080px) {
+		margin: 36px 12px;
+	}
+
+	@media(max-width: 750px) {
+		border-bottom-left-radius: 30px 9px;
+		border-bottom-right-radius: 30px 9px;
+		margin: 36px 6px 12px;
+
+		margin: 0 6px;
+	}
+
+	@media(max-width: 480px) {
+		border-bottom-left-radius: 12px 9px;
+		border-bottom-right-radius: 12px 9px;
+		margin: 36px 3px 12px;
+	}
+
+	@media(max-width: 320px) {
+		border-radius: 0;
+		height: 520px;
+		margin: 0;
+	}
+
+    @media(max-height: 480px) {  
+    	height: 100%;
+
+		@media(max-width: 320px) {
+			border-radius: 0;
+			margin: 0;
+		}    	
+    }	
 }
+
 .piano::after {
-	background: hsla(195,12%,12%,.35);
-	border-bottom-left-radius: 60px 10px;
-	border-bottom-right-radius: 60px 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+	background-color: hsla(187,24%,12%,.35);
+	border-bottom-left-radius: 60px 9px;
+	border-bottom-right-radius: 60px 9px;
 	bottom: 0;
 	content: "";
-	height: 6px;
+	height: 9px;
 	left: 0;
 	position: absolute;
 	width: 100%;
+
+	@media(max-width: 750px) {
+		border-bottom-left-radius: 30px 9px;
+		border-bottom-right-radius: 30px 9px;
+	}
+
+	@media(max-width: 480px) {
+		border-bottom-left-radius: 12px 9px;
+		border-bottom-right-radius: 12px 9px;
+	}
+
+	@media(max-width: 320px) {
+		border-radius: 0;
+		height: 6px;
+	}	
 }
+
 .piano__side--left,
 .piano__side--right {
-	height: 480px;
-	width: 60px;
-}
-.piano__wrapper {
-	background: linear-gradient(
-					rgba(255,255,255,0) 10%, 
-					rgba(255,255,255,.1)
-				);
-	border-radius: 1px;
-	box-shadow: inset 0 -3px 0 3px hsla(187,10%,15%,.8),
-				inset 0 -12px 0 6px hsla(187,10%,15%,.25);
-	height: 480px;
-	width: 100%;
-}
-.piano__shelf {
-	background-color: hsla(187,29%,32%,.18);
-	box-shadow: inset 0 3px 0 0 hsla(187,20%,25%,1),
-				0 6px 0 0 hsla(187,20%,10%,.5);
-	color: hsla(187,30%,60%,1);
-	display: flex;
-	height: 36px;
-	margin: 0 18px 0 18px;
+	background-image: linear-gradient(
+					rgba(255,255,255,0) 33%, 
+                    hsla(187,15%,35%,.5)
+				);	
+	border-bottom-left-radius: 60px 9px;
+	border-bottom-right-radius: 1px;
+	border-top-left-radius: 6px 3px;
+	border-top-right-radius: 6px 3px;
+	flex: 0 0 60px;
 	position: relative;
 	z-index: 1;
+
+	@media(max-width: 750px) {
+		border-bottom-left-radius: 30px 9px;
+		flex: 0 0 30px;
+	}
+
+	@media(max-width: 480px) {
+		border-bottom-left-radius: 12px 9px;	
+		flex: 0 0 12px;
+	}
+
+	@media(max-width: 320px) {
+		display: none;
+	}
+
+    @media(max-height: 480px) {  
+    	height: 100%;
+    }	
 }
-.piano__shelf::before {
-	border-left: 6px solid transparent;
-	border-top: 42px solid hsla(187,29%,32%,.18);
-	content: "";
-	left: -6px;
-	position: absolute;
-	top: 0;
-	z-index: 1;
+
+.piano__side--right {
+	border-bottom-left-radius: 1px;
+	border-bottom-right-radius: 60px 9px;
+
+	@media(max-width: 750px) {
+		border-bottom-right-radius: 30px 9px;
+	}
+
+	@media(max-width: 480px) {
+		border-bottom-right-radius: 12px 9px;
+	}
 }
-.piano__shelf::after {
-	border-right: 6px solid transparent;
-	border-top: 42px solid hsla(187,29%,32%,.18);
-	content: "";
-	left: auto;
-	position: absolute;
-	right: -6px;
-	top: 0;
-	z-index: 1;
+
+.piano__wrapper {
+	background-color: hsla(81,65%,60%,.85);
+	background-image: linear-gradient(
+					rgba(255,255,255,0) 33%, 
+					rgba(255,255,255,.15)
+				);
+	border-bottom-left-radius: 3px 120px;
+	border-bottom-right-radius: 3px 120px;	
+	box-shadow: 0 0 0 .5px hsla(187,30%,35%,.5),
+				inset 0 -1px 0 .5px hsla(187,10%,15%,.5),
+				inset 0 -6px 12px 12px hsla(187,65%,35%,.5),
+				inset 0 -12px 0 6px hsla(187,15%,15%,.25);
+	display: flex;
+	flex: 0 1 100%;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 12px 6px;
+
+	@media(max-width: 320px) {
+		padding: 6px 6px 12px;
+	}
+
+    @media(max-height: 480px) {  
+    	height: 100vh;
+    	padding: 6px 6px 12px;
+    }
 }

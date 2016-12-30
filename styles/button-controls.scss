@@ -1,86 +1,61 @@
-.controls__btn--round {
+.btn {
 	-webkit-appearance: none;
-	background: hsla(187,25%,45%,1);
-	box-shadow: inset 0 -1px 0 0 hsla(187,30%,55%,1),
-				0 1px 0 0 hsla(187,30%,20%,1),
-				0 2px 0 0 hsla(187,30%,25%,1),
-				0 3px 0 1px hsla(187,30%,20%,1),
-				0 4px 0 1px hsla(187,30%,15%,.3);
-	border-radius: 50%;
-	cursor: pointer;
-	height: 18px;
-	margin: 2px 3px 0 3px;
-	padding: 0;
-	position: relative;
-	width: 18px;
-}
-.controls__btn--round:hover {
-	@extend .controls__btn--round;
-
-}
-.controls__btn--round:checked {
-	@extend .controls__btn--round;
+	background-color: hsla(187,25%,45%,.75);
 	background-image: radial-gradient(
-						hsla(187,45%,70%,1) 20%,
-						hsla(187,45%,55%,1) 120%
+						hsla(187,25%,50%,.5) 5%,
+						hsla(187,25%,45%,0) 75%
 					);
-	box-shadow: 0 0 1px 0 hsla(187,45%,30%,1),
-				0 1px 0 0 hsla(187,30%,25%,1),
-				0 0 6px 0 hsla(187,45%,55%,1),
-				0 0 12px 0 hsla(187,45%,45%,1),
-				0 3px 12px 12px hsla(187,45%,45%,.18);
-	position: relative;
-	top: 3px;
-}
-.controls__btn--round:active,
-.controls__btn--round:focus {
-	@extend .controls__btn--round;
-
-	outline: none;
-}
-
-// todo: class from which to extend both button types
-.controls__btn--square {
-	-webkit-appearance: none;
-	background-color: hsla(187,25%,45%,1);
-	background-image: radial-gradient(
-						hsla(187,25%,50%,1) 40%,
-						hsla(187,25%,45%,0) 80%
-					);
-	box-shadow: inset 0 -1px 0 0 hsla(187,30%,55%,1),
-				0 1px 0 0 hsla(187,30%,20%,1),
-				0 2px 0 0 hsla(187,30%,25%,1),
-				0 3px 0 1px hsla(187,30%,20%,1),
-				0 4px 0 1px hsla(187,30%,15%,.3);
-	border-radius: 2px;
-	cursor: pointer;
+	border: none;
+	box-shadow: inset 0 -1px 0 0 hsla(187,30%,55%,.75),
+				1px 1px 0 0 hsla(187,25%,30%,1),
+				-1px 1px 0 0 hsla(187,25%,30%,1),
+				1px 2px 0 0 hsla(187,25%,35%,1),
+				-1px 2px 0 0 hsla(187,25%,35%,1),
+				0 3px 0 1px hsla(187,15%,15%,.35);
+	flex: 0 0 24px;
 	height: 24px;
-	margin: 0 12px 0 3px;
-	padding: 0;
 	position: relative;
 	width: 24px;
-}
-.controls__btn--square:hover {
-	@extend .controls__btn--square;
 
-}
-.controls__btn--square:checked {
-	@extend .controls__btn--square;
-	background-image: radial-gradient(
-						hsla(187,45%,70%,1) 20%,
-						hsla(187,45%,55%,1) 120%
+	&:checked {
+		background-image: radial-gradient(
+							hsla(187,45%,70%,1) 20%,
+							hsla(187,45%,55%,1) 120%
+						);
+		box-shadow: 0 0 1px 0 hsla(187,45%,30%,1),
+					0 1px 0 0 hsla(187,30%,25%,1),
+					0 0 6px 0 hsla(187,45%,55%,1),
+					0 0 12px 0 hsla(187,45%,45%,1),
+					0 3px 12px 12px hsla(187,45%,45%,.18);
+		top: 2px;
+
+		@media(max-width: 320px) {
+			top: 1px;
+		}
+	}
+
+	&:hover {
+		background: hsla(187,30%,50%,.75);
+		background-image: radial-gradient(
+						hsla(187,30%,55%,.5) 5%,
+						hsla(187,30%,45%,0) 75%
 					);
-	box-shadow: 0 0 1px 0 hsla(187,45%,30%,1),
-				0 1px 0 0 hsla(187,30%,25%,1),
-				0 0 6px 0 hsla(187,45%,55%,1),
-				0 0 12px 0 hsla(187,45%,45%,1),
-				0 3px 12px 12px hsla(187,45%,45%,.18);
-	position: relative;
-	top: 3px;
-}
-.controls__btn--square:active,
-.controls__btn--square:focus {
-	@extend .controls__btn--square;
+	}
 
-	outline: none;
+	&:checked:hover {
+		background-image: radial-gradient(
+							hsla(187,50%,75%,1) 20%,
+							hsla(187,45%,55%,1) 120%
+						);	
+	}
+}
+
+.controls__btn--round {
+	@extend .btn;
+	border-radius: 50%;
+}
+
+.controls__btn--square {
+	@extend .btn;
+	border-radius: 2px;
 }

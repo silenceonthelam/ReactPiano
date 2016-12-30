@@ -1,130 +1,141 @@
-var	pitchClassNames = ['A','Bb','B','C','C#','D','Eb','E','F','F#','G','Ab'],
-	octaves = [0,1,2,3,4,5,6,7,8,9,10,11];
+const pitchClassNames = ["C","C#","D","Eb","E","F","F#","G","Ab","A","Bb","B"];
+const octaves = [0,1,2,3,4,5,6,7,8,9,10,11];
+const blackKeyIndicies = [1,3,6,8,10];
 
-// maybe this should be a "class" itself
-	// const PITCH_CLASS_NAMES: ['A','Bb','B','C','C#','D','Eb','E','F','F#','G','Ab'];
+function adjustForEndingBlackKey(numKeys) {
+    // remove last key if black since pianos
+    // all end on white keys
+    return (blackKeyIndicies.indexOf(numKeys % 12) === -1) ?
+             numKeys-- : numKeys;
+}
 
-	// pitch class names should not exist on the obj themselves,
-	// rather, they should be a look-up, based on pitch class indicies
-	// as the names themselves can change, based on the rules of music theory
+function createKeys(numKeys) {
+    var keys = [],
+        k = 0;
 
-	// todo: PC stuff to move to music theory module
-	// also, this will fix enharmonic issues
-var PianoKeyGenerator = {
-	generateKeys: function(numKeys) {
-		// just incase numKeys is not properly initialized
-		var numKeys = numKeys || 24;
+    var startOctave = 0,
+        startPitchClass = 0;
 
-		var keys = [],
-			k = 0;
+    // adjust the start octaves if the screen is small
+    // b/c who wants a keyboard with just the lowest octave
+    // well, maybe people might want that,
+    // but that's a different project
 
-		var startOctave = 0,
-			startPitchClass = 0;
+    if (numKeys > 48) {
+        startOctave = 1;
+    } else if (numKeys <= 48 && numKeys > 36) {
+        startOctave = 2;
+    } else {
+        startOctave = 3;
+    }
 
-		//adjust the start octaves if the screen is small
-		//b/c who wants a keyboard with just the lowest octave
-		//well, maybe people might want that,
-		//but that's their problem
+    var offset = 0;
 
-		if (numKeys <= 60 && numKeys > 48) {
-			startOctave = 1;
-		} else if (numKeys <= 48 && numKeys > 36) {
-			startOctave = 2;
-		} else if (numKeys <= 36 && numKeys > 24) {
-			startOctave = 3;
-		} else {
-			startOctave = 4;
-		}
+    if (startOctave > 0) {
+        offset = startOctave * 12;
+    }
 
-		var offset = 0;
+    var keyNumber = offset,
+        x = 0;
 
-		if (startOctave > 0) {
-			offset = startOctave * 12;
-		}
+    while (numKeys > 0) {
+        var octave = parseInt((x / 12) + startOctave, 10);
 
-		var keyNumber = offset;
+        keys.push({
+            keyNumber: keyNumber++,
+            octave: octaves[octave],
+            pitchClass: pitchClassNames[x % 12]
+        });
 
-		// this is more of a while loop
-		for (var i=startOctave; i<octaves.length; i++) { //octaves really isn't needed
-			for (var j=startPitchClass; j<pitchClassNames.length; j++) {
+        numKeys--;
+        x++;
+    }
 
-				keys.push({
-					keyNumber: keyNumber++,
-					octave: octaves[i],
-					pitchClass: pitchClassNames[j]
-				});
+    return keys;
+}
 
-				if (k >= numKeys) {
-					break;
-				}
+function getNumKeys(availWidth, whiteKeyWidth) {
+    var totalKeys = 0,
+        i = 0;
 
-				k++;
-			}
+    while (availWidth > whiteKeyWidth) {
+        // since black keys don't attribute to the overall width
+        // due to neg margin, don't subtract anything
+        if (blackKeyIndicies.indexOf(i) === -1) {
+            availWidth = availWidth - whiteKeyWidth;
+        }
 
-			if (k >= numKeys) {
-				break;
-			}
-		}
+        totalKeys++;
+        i++;
 
-		return keys;
-	},
-	//todo:
-    //add eq. border on each side of key rows
-    //based on remaining pxs
-	getNumKeys: function(availWidth) {
-	    var windowWidth = availWidth,
-	        horizontalPadding = 30,
-	        blackKeyIndicies = [1,3,6,8,10],
-	        totalKeys = 0,
-	        whiteKeys = 7,
-	        whiteKeyWidth = 49,
-	        blackKeys = 5,
-	        blackKeyWidth = 34,
-	        octaveWidth = 7 * whiteKeyWidth, //(whiteKeys * whiteKeyWidth) + (blackKeys * blackKeyWidth),
-	        totalOctaves = parseInt((windowWidth - horizontalPadding) / octaveWidth, 10),
-	        extraWidth = (windowWidth - horizontalPadding) % octaveWidth;
+        if (i === 12) {
+            i = 0;
+        }
+    }
 
-	        // console.log("white", whiteKeys * whiteKeyWidth);
-		        // console.log("black", blackKeys * blackKeyWidth);
-		        // console.log("totalWidth", window.innerWidth);
-		        // console.log("octaveWidth", octaveWidth);
-		        // console.log("totalOctaves", totalOctaves);
-		        // console.log("extraWidth", extraWidth);
+    return totalKeys;
+}
 
-	        var extraKeys = 0,
-	            i = 0;
+function getRemainingSpace(numKeys, availWidth, whiteKeyWidth) {
+    // if any space remains after keys are defined,
+    // we need to distribute that to make the piano look better
 
-	        if (extraWidth > whiteKeyWidth) {
-	            while (extraWidth > 0) {
-	                extraWidth = extraWidth - whiteKeyWidth;
-	                extraKeys++;
-	                i++;
-	            }
-	        } else if (extraWidth === whiteKeyWidth) {
-	            extraKeys = 1;
-	        }
+    var totalWidth = 0,
+        i = 0,
+        j = 0;
 
-	        // console.log("extraKeys", extraKeys);
+    for (i=0; i<numKeys; i++) {
+        // the last key is a black one, don't count it
 
-	        totalKeys = totalOctaves * 12 + extraKeys;
+        if (i === numKeys.length - 1 && 
+            blackKeyIndicies.indexOf(i) !== -1) {
+            break;
+        }
 
-	        // console.log("totalKeys", totalKeys);
+        if (blackKeyIndicies.indexOf(j) === -1) {
+            totalWidth = totalWidth + whiteKeyWidth;
+        }
 
-	    //make sure to end of a white key
-	    var endingKey = totalKeys % 12;
+        j++;
 
-	    // console.log("endingKey", endingKey);
+        if (j === 12) {
+            j = 0;
+        }
+    }
 
-	    if (blackKeyIndicies.indexOf(endingKey)) {
-	        totalKeys--;
-	    }
+    return (availWidth - totalWidth);
+}
 
+export function generateKeys(windowWidth) {
+    if (windowWidth <= 1080 && windowWidth > 750) {
+        var whiteKeyWidth = 48,
+            pianoSideWidth = 60 + 60,
+            pianoMargin = 12 + 12 + 18 + 3;    
+    } else if (windowWidth <= 750 && windowWidth > 480) {
+        var whiteKeyWidth = 42,
+            pianoSideWidth = 30 + 30,
+            pianoMargin = 6 + 6 + 18 + 3;
+    } else if (windowWidth <= 480 && windowWidth > 320) {         
+            var whiteKeyWidth = 42,
+            pianoSideWidth = 12 + 12,
+            pianoMargin = 3 + 3 + 18 + 3;
+    } else if (windowWidth <= 320) {
+        var whiteKeyWidth = 42,
+            pianoSideWidth = 0,
+            pianoMargin = 18 + 3;
+    } else {
+        var whiteKeyWidth = 48,
+            pianoSideWidth = 60 + 60,
+            pianoMargin = 24 + 24 + 18 + 3;        
+    }
 
-	    return totalKeys;
-	}
-};
+    var availWidth = windowWidth - pianoMargin - pianoSideWidth;
 
-module.exports = {
-	getNumKeys: PianoKeyGenerator.getNumKeys,
-	generateKeys: PianoKeyGenerator.generateKeys
-};
+    var numKeys = getNumKeys(availWidth, whiteKeyWidth),
+        adjustedNumKeys = adjustForEndingBlackKey(numKeys);
+
+    return {
+        keys: createKeys(numKeys),
+        remainingSpace: getRemainingSpace(adjustedNumKeys, availWidth, whiteKeyWidth)
+    };
+}

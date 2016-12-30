@@ -1,32 +1,34 @@
-var webpack = require('webpack');
+var webpack = require("webpack"),
+    path = require("path");
 
 module.exports = {
-    devtool: 'eval',
+    devtool: "cheap-module-eval-source-map",
     entry: [
-        'webpack-dev-server/client?http://0.0.0.0:3232',
-        'webpack/hot/only-dev-server',
-        './scripts/index'
+        "webpack-hot-middleware/client",
+        "./scripts/index"
     ],
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            loader: "babel",
+            exclude: /node_modules/,
+            include: __dirname
+        }, {
+            test: /\.scss$/,
+            include: path.join(__dirname, "styles"),
+            loader: "style!css!sass"
+        }]
+    },  
     output: {
-        path: __dirname + '/build/',
-        filename: 'bundle.js',
-        publicPath: '/build/'
+        path: path.join(__dirname, "dist"),
+        filename: "bundle.js",
+        publicPath: "/static/"
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
     ],
     resolve: {
-        extensions: ['','.js','.jsx']
-    },
-    module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            loaders: ['react-hot','jsx?harmony'],
-            exclude: /node_modules/
-        }, {
-            test: /\.scss$/,
-            loader: 'style-loader!css-loader!sass-loader'
-        }]
+        extensions: ["",".js",".scss"]
     }
 };

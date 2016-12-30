@@ -1,43 +1,22 @@
-// functional utils
-var _                 = require("lodash"); // optimized "underscore.js"
-    
-// es6/node polyfills
-var assign            = require("object-assign"), // copy objs
-    EventEmitter      = require("events").EventEmitter; // event helpers
+import {calcFreq}     from "../note-utils";
+import {generateKeys} from "../piano-key-generator";
 
-// flux architecture
-var AppDispatcher     = require("../AppDispatcher"),
-    PianoConstants    = require("../PianoConstants");
+var EventEmitter   = require("events").EventEmitter,
+    AppDispatcher  = require("../AppDispatcher"),
+    PianoConstants = require("../PianoConstants");
 
-// generate keys based on available space
-var PianoKeyGenerator = require("../piano-key-generator");
-
-// generate frequencies
-var noteUtils         = require("../note-utils");
-
-// the only constant is "change"
-//      ~ Wayne Gretzky
-//          ~ Michael Scott
 const CHANGE_EVENT = "change";
 
-// make sure this is only init once
-var audioCtx = audioCtx || new AudioContext();
-
-var _currentChord = "",
-    _currentNotes = [],
-    _pianoKeys    = [];
-
-var numKeys = PianoKeyGenerator.getNumKeys(window.innerWidth);
-_pianoKeys = PianoKeyGenerator.generateKeys(numKeys);
-
-// todo: on page resize
-function regenerateKeys() {}
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
+    _pianoKeys = generateKeys(window.innerWidth).keys,
+    _remainingSpace = generateKeys(window.innerWidth).remainingSpace || 0,
+    _currentNote = {};
 
 var _synthSettings = {
     detuneAmt: 0,
     masterGain: 0.5,
     oscType: "sine",
-    temperament: "pythagorean"
+    tuning: "equal"
 };
 
 // audioParam updaters
@@ -53,20 +32,20 @@ function updateOscType(oscType) {
     _synthSettings.oscType = oscType;
 }
 
-function updateTemperament(temperament) {
-    _synthSettings.temperament = temperament;
+function updateTuning(tuning) {
+    _synthSettings.tuning = tuning;
 }
 
-var PianoStore = assign({}, EventEmitter.prototype, {
+var PianoStore = Object.assign({}, EventEmitter.prototype, {
     getAllKeys: function() {
         return _pianoKeys;
     },
-    getCurrentChord: function() {
-        return _currentChord;
+    getCurrentNote: function() {
+        return _currentNote;
     },
-    getCurrentNotes: function() {
-        return _currentNotes;
-    },
+    getRemainingSpace: function() {
+        return _remainingSpace;
+    },    
     getSynthSettings: function() {
         return _synthSettings;
     },
@@ -81,21 +60,17 @@ var PianoStore = assign({}, EventEmitter.prototype, {
     }
 });
 
-var currentNotes = [],
-    currentGainNodes = [];
+var currentGainNodes = [];
 
 function playNote(note) {
-    var freq = noteUtils.calcFreq(note, _synthSettings.temperament);
+    var freq = calcFreq(note, _synthSettings.tuning);
 
     var osc = audioCtx.createOscillator(),
         gainNode = audioCtx.createGain();
 
     osc.frequency.value = freq;
     osc.detune.value = _synthSettings.detuneAmt;
-
     osc.type = _synthSettings.oscType;
-
-    // default the gain to 0 so envelopes will work
     gainNode.gain.value = 0;
 
     osc.connect(gainNode);
@@ -106,84 +81,37 @@ function playNote(note) {
     var now = audioCtx.currentTime;
 
     gainNode.gain.cancelScheduledValues(now);
-    gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-    gainNode.gain.linearRampToValueAtTime(_synthSettings.masterGain, now + .001);
-
-    currentNotes.push(osc);
+    gainNode.gain.linearRampToValueAtTime(_synthSettings.masterGain, now + .005);
     currentGainNodes.push(gainNode);
 }
 
-// todo: keymapping stuff
-
-// 1, 2 => pitch bend
-// 3, 4, 5, 6, 7, 8 => modulation
-
-// tab => sustain
-
-// a =>
-    // w =>
-// s =>
-    // e =>
-// d =>
-// f =>
-    // t =>
-// g =>
-    // y =>
-// h =>
-    // u =>
-// j =>
-
-// k =>
-    // o =>
-// l =>
-    // p =>
-// ; =>
-// ' =>
-
-// octaves: z, x
-// velocity: c, v
-
-function playSpecificNote(note, keypressed) {} // todo
-
 function stopNote(note) {
-    // var currentNote = currentNotes.pop();
     var currentGainNode = currentGainNodes.pop();
-
     var now = audioCtx.currentTime;
     currentGainNode.gain.cancelScheduledValues(now);
-    currentGainNode.gain.setTargetAtTime(0.0, now + .25, .15);
+    currentGainNode.gain.linearRampToValueAtTime(0.0, now + .5);
 }
-
-function stopSpecificNote(note, keypressed) {} // todo
 
 AppDispatcher.register(function(action) {
     switch(action.actionType) { 
-
-        //how the piano should display
+        
+        // how the piano should display
         case PianoConstants.PIANO_RECALC_NUM_KEYS:
-            regenerateKeys();
+            _pianoKeys = generateKeys(action.winWidth).keys;
+            _remainingSpace = generateKeys(action.winWidth).remainingSpace || 0;
             PianoStore.emitChange();
             break;
 
         // play notes with mouse
         case PianoConstants.PIANO_PLAY_NOTE:
             playNote(action.note);
+            _currentNote = action.note;
             PianoStore.emitChange();
             break;
 
         case PianoConstants.PIANO_STOP_NOTE:
             stopNote(action.note);
-            PianoStore.emitChange();
-            break;
-
-        // play notes with qwerty keyboard
-        case PianoConstants.PIANO_PLAY_SPECIFIC_NOTE:
-            playSpecificNote(action.note, keypressed);
-            PianoStore.emitChange();
-            break;
-
-        case PianoConstants.PIANO_STOP_SPECIFIC_NOTE:
-            stopSpecificNote(action.note, keypressed);
+            _currentNote = {};
             PianoStore.emitChange();
             break;
 
@@ -193,7 +121,7 @@ AppDispatcher.register(function(action) {
             PianoStore.emitChange();
             break;
 
-         case PianoConstants.PIANO_UPDATE_GAIN:
+        case PianoConstants.PIANO_UPDATE_GAIN:
             updateGain(action.gainVal);
             PianoStore.emitChange();
             break;
@@ -203,8 +131,8 @@ AppDispatcher.register(function(action) {
             PianoStore.emitChange();
             break;
 
-         case PianoConstants.PIANO_UPDATE_TEMPERAMENT:
-            updateTemperament(action.temperament);
+        case PianoConstants.PIANO_UPDATE_TUNING:
+            updateTuning(action.tuning);
             PianoStore.emitChange();
             break;
 

@@ -1,73 +1,171 @@
 .piano__controls {
-	background-color: hsla(187,59%,82%,.18);
-	border-radius: 3px 3px 1px 1px;
+	background-color: hsla(187,59%,82%,1);
+	background-image: linear-gradient(
+						hsla(187,12%,24%,1),
+						hsla(187,12%,24%,.9)
+					  );
+	border-radius: 2px 1px 1px;
+	box-shadow: inset 0 -3px 3px 0 hsla(187,15%,20%,.15),
+				inset 0 -1px 0 0 hsla(187,15%,20%,.5),
+				0 2px 0 -1px hsla(187,25%,20%,.5),
+				0 4px 0 -2px hsla(187,50%,30%,.75),
+				0 6px 6px 0 hsla(187,15%,15%,.35),
+				0 -18px 12px -18px hsla(187,95%,65%,.5);
 	color: hsla(187,30%,60%,1);
 	display: flex;
-	height: 150px;
-	margin: 24px 12px 0 12px;
+	flex: 1 1 100%;
 	position: relative;
+
+	@media(max-width: 320px) {
+		flex-direction: column;
+	}
 }
+
 .piano__controls__col {
 	display: flex;
-	margin: 0 auto;
-	padding: 0;
-	width: 100%;
+	flex: 1 1 100%;
+	flex-direction: column;
+
+	&:last-of-type {
+		flex-direction: row;
+	}
+
+	&:nth-of-type(3n-1) {
+	    @media(max-width: 320px) {
+	        order: 1;
+	    }    
+	}
 }
+
 .controls__group {
-	display: block;
-	margin: 12px 24px 0;
-}
-.controls__group--middle {
 	display: flex;
-	margin: 12px 24px 0 12px;
-}
-.controls__label {
-	letter-spacing: .5px;
-	line-height: 18px;
-	margin: 0 auto;
-	text-align: center;
-	text-shadow: 0 -1px 0 hsla(187,39%,22%,.3);
-	text-transform: uppercase;
-}
-.controls__label--stacked {
-	@extend .controls__label;
+	flex-direction: column;
+	flex: 1 1 100%;
 
-	display: block;
-	margin: 0;
-	padding: 0;
-	text-align: left;
+	.piano__controls__col:last-of-type & {
+	    @media(max-width: 320px) {
+	        flex-direction: row;
+	    } 		
+	}	
 }
-.controls__label__title {
-	-moz-background-clip: text;
-	-webkit-background-clip: text;
-	background-clip: text;
-	background-color: hsla(187,10%,20%,1);
-	color: transparent;
-	letter-spacing: 1px;
-	text-shadow: 0 1px 0 hsla(187,30%,60%,.2);
-	text-transform: uppercase;
 
-			display: none; //temp
-}
-.controls__label__text {
-	font-size: 10px;
-	font-weight: 400;
-}
-.controls__label__text--stacked {
-	@extend .controls__label__text;
+.controls__group--oscs {
+	@extend .controls__group;
+	flex-direction: row;
 
+    @media(max-width: 320px) {
+    	flex: 1 2 50%;
+		padding: 12px 0 0;
+    } 	
+}
+
+.controls__group--speaker {
+	@extend .controls__group;
+	flex-direction: row;
+	flex: 1 1 100%;
+	padding-left: 0;
+	padding-right: 6px;
+
+	@media(max-width: 750px) {
+		flex: 0 1 50%;
+	}	
+
+	@media(max-width: 640px) {
+		display: none;
+	}		
+}
+
+.controls__speaker {
+	background-color: hsla(187,24%,21%,.25);
+	background-image: 
+				linear-gradient(
+					90deg,
+					hsla(187,12%,12%,.25),
+					hsla(187,12%,12%,.15) 5%,
+					hsla(187,12%,12%,0) 20%,
+					hsla(187,12%,12%,0) 80%,
+					hsla(187,12%,12%,.15) 95%,
+					hsla(187,12%,12%,.25)
+				), 
+				radial-gradient(
+                    100% 5px at 50% 0,
+                    hsla(187,12%,12%,.25) 50%,
+                    hsla(187,12%,12%,0) 100%
+				), 
+				radial-gradient(
+                    100% 5px at 50% 100%,
+                    hsla(187,12%,12%,.25) 50%,
+                    hsla(187,12%,12%,0) 100%
+				);
+	border-radius: 5% / 50%; 
+	box-shadow: 
+				inset 0 0 3px 0 hsla(187,100%,75%,.75),
+				inset 0 0 1px 3px hsla(187,24%,12%,.5),
+				inset 0 6px 3px 0 hsla(187,24%,6%,.15),
+				inset 0 -6px 3px 0 hsla(187,24%,6%,.15)
+				;
+	flex: 0 1 100%;
+	overflow: hidden;
 	position: relative;
-	top: -6px;
-}
-.controls__label__text--checked {
-	@extend .controls__label__text;
 
-	color: hsla(187,40%,72%,1);
-	text-shadow: 0 -1px 0 hsla(187,39%,22%,.3),
-				0 0 6px hsla(187,45%,55%,1),
-				0 1px 12px hsla(187,45%,45%,.1);
-}
-.controls__label__text--stacked--checked {
-	@extend .controls__label__text--stacked;
-	@extend .controls__label__text--checked;
+	&::before {
+		background-image: linear-gradient(
+			                transparent 6px,
+							hsla(187,12%,21%,.5) 6px,
+							transparent 50%,
+							hsla(187,12%,18%,.05) 100%
+						), radial-gradient(
+							transparent 50%,
+							hsla(187,12%,12%,.25)
+						), radial-gradient(
+							circle at 50% 50%,
+							transparent 25%,
+							hsla(187,12%,12%,.25) 85%
+						), radial-gradient(
+						    circle,
+							transparent 65%,
+							hsla(187,12%,21%,.5) 95%
+						);
+		bottom: 0;
+		content: "";
+		height: 100%;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 100%;
+		z-index: 1;
+	}
+
+	&::after {
+		background: radial-gradient(
+						hsla(187,12%,6%,.5) 2px,
+						hsla(187,12%,21%,.75) 2px,
+						hsla(187,12%,18%,.95) 4px,
+						hsla(187,24%,6%,0) 4px
+					) -4px -4px,
+					radial-gradient(
+						hsla(187,12%,6%,.5) 2px,
+						hsla(187,12%,21%,.65) 2px,
+						hsla(187,12%,18%,.95) 4px,
+						hsla(187,24%,6%,0) 4px
+					) 4px 4px,
+					radial-gradient(
+						rgba(102,102,102,.25) 4px,
+						rgba(102,102,102,0) 4px
+					) -4px -3px,
+					radial-gradient(
+						rgba(102,102,102,.25) 4px,
+						rgba(102,102,102,0) 4px
+					) 4px 5px;
+		background-size: 16px 16px;
+		border-radius: 10% / 50%;
+		content: "";
+		height: 96%;
+		left: 2%;
+		position: absolute;
+		top: 2%; 
+		width: 96%;
+	}
 }

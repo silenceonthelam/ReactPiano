@@ -1,16 +1,5 @@
 // dictionaries of tuning ratios for intonations based on ratios: intonations
 
-// see: music history and how scores of learned men have suffered o'er the previous
-// millenia yearning to find the perfect tuning ratio--
-// one that would allow for in-tune intervals of fifths without neglecting the thirds,
-// thirds without neglecting the fifths,
-// octaves that were not stretched (see: modern-day piano tuning),
-// and wolves that would not howl
-
-// methods for calculating frequencies in tuning systems not based on ratios: temperaments
-// not to be confused with the little-known temperance
-// see: Ben Frankin, but not his actual life-style, just the stuff about which he wrote
-
 function calcPy(pitchNum) {
 	var tuningRatio = [];
 
@@ -68,17 +57,14 @@ function calcMeanTone(pitchNum) {
 	return tuningRatio[pitchNum];
 }
 
-module.exports = {
-	calcTuningRatio: function(temperament, pitchNum) {
-
-	    switch (temperament) {
-	        case "pythagorean": return calcPy(pitchNum);
-	            break;
-	        case "just": return calcJust(pitchNum);
-	            break;
-	        case "meantone": return calcMeanTone(pitchNum);
-	            break;
-	        default: //no-op
-	    }
-	}
-};
+export function calcTuningRatio(temperament, pitchNum) {
+    switch (temperament) {
+        case "pythagorean": return calcPy(pitchNum);
+            break;
+        case "just": return calcJust(pitchNum);
+            break;
+        case "meantone": return calcMeanTone(pitchNum);
+            break;
+        default: 
+    }
+}

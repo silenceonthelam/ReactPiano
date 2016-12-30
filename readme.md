@@ -1,7 +1,6 @@
 # React Piano
 
 A piano of sorts built using React.js, Flux, webpack, and the web audio api.
-Working on a new version entitled "redux piano".
 
 ## Usage
 
