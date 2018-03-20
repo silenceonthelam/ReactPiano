@@ -1,5 +1,7 @@
 # React Piano
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/silenceonthelam/ReactPiano.svg)](https://greenkeeper.io/)
+
 A piano of sorts built using React.js, Flux, webpack, and the web audio api.
 
 ## Usage
